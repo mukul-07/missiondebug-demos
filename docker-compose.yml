@@ -1,0 +1,23 @@
+# MissionDebug demo — one container, no ROS install, no source checkout needed.
+#
+#   docker compose up
+#   → open http://localhost:8000
+#
+# The container builds itself the first time (~2-3 min). After that, fast.
+# Sessions and the SQLite index live in the `sessions/` directory next to
+# this file — delete it to start fresh.
+
+services:
+  missiondebug:
+    build:
+      context: .
+      args:
+        MD_REF: main
+    image: missiondebug-demo:latest
+    container_name: missiondebug-demo
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./fixtures:/fixtures:ro
+      - ./sessions:/sessions
+    restart: unless-stopped
