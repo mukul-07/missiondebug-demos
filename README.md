@@ -16,7 +16,7 @@ docker compose up
 
 Open <http://localhost:8000>.
 
-First run builds the image (~2-3 minutes — it clones the main repo, builds the web bundle with pnpm, installs the Python backend). Subsequent runs are instant.
+First run pulls a pre-built image from [GHCR](https://github.com/mukul-07/missiondebug/pkgs/container/missiondebug) (~30 seconds, multi-arch — works on amd64 and arm64). Subsequent runs are instant.
 
 > If `docker compose` complains about permissions, prefix with `sudo` or add your user to the `docker` group: `sudo usermod -aG docker $USER && newgrp docker`.
 
@@ -55,19 +55,36 @@ docker compose restart
 
 ## Pinning to a specific version
 
-By default the demo tracks `main` of the upstream repo. To pin to a tag or commit:
+By default the demo tracks `:latest` (tip of `main`). To pin to a release tag or a specific commit, edit `docker-compose.yml`:
+
+```yaml
+services:
+  missiondebug:
+    image: ghcr.io/mukul-07/missiondebug:1.5.0   # release tag
+    # or:
+    # image: ghcr.io/mukul-07/missiondebug:sha-abc1234   # immutable commit ref
+```
+
+Browse available tags: <https://github.com/mukul-07/missiondebug/pkgs/container/missiondebug>.
+
+## Build from source (offline / airgap)
+
+If you can't reach GHCR, build the image yourself from the main repo:
 
 ```bash
-docker compose build --build-arg MD_REF=v1.5.0
-docker compose up
+git clone https://github.com/mukul-07/missiondebug.git
+cd missiondebug
+docker build -t ghcr.io/mukul-07/missiondebug:latest .
 ```
+
+Then `cd` back to this demos repo and `docker compose up` — compose will use the locally-built image you just tagged.
 
 ## Cleanup
 
 ```bash
-docker compose down              # stop the container
-rm -rf sessions/                 # remove indexed data
-docker image rm missiondebug-demo  # remove the built image
+docker compose down                                         # stop the container
+rm -rf sessions/                                            # remove indexed data
+docker image rm ghcr.io/mukul-07/missiondebug:latest        # remove the pulled image
 ```
 
 ## Common issues

@@ -1,19 +1,19 @@
 # MissionDebug demo — one container, no ROS install, no source checkout needed.
 #
 #   docker compose up
-#   → open http://localhost:8000
+#   → open http://localhost:8000 (or http://localhost:8080 if you set HOST_PORT=8080)
 #
-# The container builds itself the first time (~2-3 min). After that, fast.
-# Sessions and the SQLite index live in the `sessions/` directory next to
-# this file — delete it to start fresh.
+# First run pulls a pre-built multi-arch image (~30 seconds) from GitHub
+# Container Registry. Sessions and the SQLite index live in the `sessions/`
+# directory next to this file — delete it to start fresh.
+#
+# To pin to a specific release, replace ':latest' with a version tag below
+# (e.g. ':1.5.0') or with an immutable commit ref (e.g. ':sha-abc1234').
+# See https://github.com/mukul-07/missiondebug/pkgs/container/missiondebug
 
 services:
   missiondebug:
-    build:
-      context: .
-      args:
-        MD_REF: main
-    image: missiondebug-demo:latest
+    image: ghcr.io/mukul-07/missiondebug:latest
     container_name: missiondebug-demo
     ports:
       - "${HOST_PORT:-8000}:8000"
