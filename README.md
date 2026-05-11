@@ -18,6 +18,8 @@ Open <http://localhost:8000>.
 
 First run builds the image (~2-3 minutes — it clones the main repo, builds the web bundle with pnpm, installs the Python backend). Subsequent runs are instant.
 
+> **Port already in use?** Override the host port with `HOST_PORT=8080 docker compose up`, then open <http://localhost:8080>.
+
 ## What you'll see
 
 The session list will already contain a `sample_drive` fixture — click it.

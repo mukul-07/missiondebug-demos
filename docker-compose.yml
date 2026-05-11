@@ -16,7 +16,7 @@ services:
     image: missiondebug-demo:latest
     container_name: missiondebug-demo
     ports:
-      - "8000:8000"
+      - "${HOST_PORT:-8000}:8000"
     volumes:
       - ./fixtures:/fixtures:ro
       - ./sessions:/sessions
