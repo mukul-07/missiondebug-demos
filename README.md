@@ -18,7 +18,7 @@ Open <http://localhost:8000>.
 
 First run builds the image (~2-3 minutes — it clones the main repo, builds the web bundle with pnpm, installs the Python backend). Subsequent runs are instant.
 
-> **Port already in use?** Override the host port with `HOST_PORT=8080 docker compose up`, then open <http://localhost:8080>.
+> If `docker compose` complains about permissions, prefix with `sudo` or add your user to the `docker` group: `sudo usermod -aG docker $USER && newgrp docker`.
 
 ## What you'll see
 
@@ -68,6 +68,43 @@ docker compose up
 docker compose down              # stop the container
 rm -rf sessions/                 # remove indexed data
 docker image rm missiondebug-demo  # remove the built image
+```
+
+## Common issues
+
+**Port 8000 already in use on the host.** Override via a `.env` file (works under sudo, which strips inline env vars):
+
+```bash
+cp .env.example .env             # then uncomment HOST_PORT=8080
+docker compose down              # tear down any stale container
+docker compose up -d --force-recreate
+```
+
+Then open <http://localhost:8080>.
+
+**Reached a Linux VM from a different machine.** `localhost` from the host won't reach the container — you need the VM's IP:
+
+```bash
+# inside the VM
+hostname -I
+# → e.g. 192.168.64.7
+```
+
+Open `http://<vm-ip>:8080` from your host browser.
+
+**`docker ps` shows the container running but no port in the PORTS column.** Compose reused a stale container created with old config. Force a rebuild:
+
+```bash
+docker compose down
+docker compose up -d --force-recreate
+docker ps                        # PORTS column should show 0.0.0.0:8080->8000/tcp
+```
+
+**Container exits when you close the terminal.** Run detached so it survives:
+
+```bash
+docker compose up -d             # -d = detached
+docker compose logs -f           # tail logs in another terminal
 ```
 
 ## License
