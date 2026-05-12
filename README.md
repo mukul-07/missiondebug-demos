@@ -4,6 +4,8 @@
 
 MissionDebug captures the 60 seconds before a ROS 2 robot failure and lets you scrub it in the browser. This repo runs a self-contained demo of the **replay** side against a pre-recorded session, so you can see the product before installing on a real robot.
 
+![MissionDebug replay demo](docs/demo.gif)
+
 ## Run it
 
 You need [Docker](https://docs.docker.com/get-docker/) with Compose.
