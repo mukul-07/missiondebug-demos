@@ -12,23 +12,29 @@
 # See https://github.com/mukul-07/missiondebug/pkgs/container/missiondebug
 #
 # Auth (v2 P4):
-#   The demo runs in `single` mode by default — open routes, v1.5
-#   behaviour. To demonstrate fleet-tier auth (browser HTTP Basic +
-#   agent Bearer token), uncomment MD_MODE / MD_HUB_AUTH_PASSWORD
-#   below. The agent ingest path uses the same secret as a Bearer
-#   token unless MD_HUB_AUTH_TOKEN is also set.
+#   By default the demo runs in `single` mode — open routes, v1.5
+#   behaviour. To demonstrate fleet-tier auth, set MD_MODE + the
+#   password on the host before running:
+#
+#       export MD_MODE=fleet
+#       export MD_HUB_AUTH_PASSWORD=demo
+#       docker compose up -d --force-recreate
+#
+#   Or put them in a `.env` file next to this compose.
+#   The agent ingest path uses the same secret as a Bearer token
+#   unless MD_HUB_AUTH_TOKEN is also set.
 
 services:
   missiondebug:
     image: ghcr.io/mukul-07/missiondebug:latest
     container_name: missiondebug-demo
-    # Default: single-robot mode, no auth. To demonstrate fleet-tier
-    # auth (browser HTTP Basic + agent Bearer), uncomment the entire
-    # `environment:` block below.
-    #
-    # environment:
-    #   MD_MODE: fleet
-    #   MD_HUB_AUTH_PASSWORD: demo
+    environment:
+      # Defaults preserve v1.5 open-routes behaviour. Override via
+      # shell env or a .env file alongside this compose to flip on
+      # fleet auth — see the header comment above.
+      MD_MODE: "${MD_MODE:-single}"
+      MD_HUB_AUTH_PASSWORD: "${MD_HUB_AUTH_PASSWORD:-}"
+      MD_HUB_AUTH_TOKEN: "${MD_HUB_AUTH_TOKEN:-}"
     ports:
       - "${HOST_PORT:-8000}:8000"
     volumes:
