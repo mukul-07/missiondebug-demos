@@ -10,11 +10,24 @@
 # To pin to a specific release, replace ':latest' with a version tag below
 # (e.g. ':1.5.0') or with an immutable commit ref (e.g. ':sha-abc1234').
 # See https://github.com/mukul-07/missiondebug/pkgs/container/missiondebug
+#
+# Auth (v2 P4):
+#   The demo runs in `single` mode by default — open routes, v1.5
+#   behaviour. To demonstrate fleet-tier auth (browser HTTP Basic +
+#   agent Bearer token), uncomment MD_MODE / MD_HUB_AUTH_PASSWORD
+#   below. The agent ingest path uses the same secret as a Bearer
+#   token unless MD_HUB_AUTH_TOKEN is also set.
 
 services:
   missiondebug:
     image: ghcr.io/mukul-07/missiondebug:latest
     container_name: missiondebug-demo
+    environment:
+      # Default: single-robot mode, no auth. Uncomment the two lines
+      # below to switch to fleet mode with auth (browser prompts for
+      # password; agents need Authorization: Bearer <password>).
+      # MD_MODE: fleet
+      # MD_HUB_AUTH_PASSWORD: demo
     ports:
       - "${HOST_PORT:-8000}:8000"
     volumes:
