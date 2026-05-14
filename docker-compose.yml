@@ -22,12 +22,13 @@ services:
   missiondebug:
     image: ghcr.io/mukul-07/missiondebug:latest
     container_name: missiondebug-demo
-    environment:
-      # Default: single-robot mode, no auth. Uncomment the two lines
-      # below to switch to fleet mode with auth (browser prompts for
-      # password; agents need Authorization: Bearer <password>).
-      # MD_MODE: fleet
-      # MD_HUB_AUTH_PASSWORD: demo
+    # Default: single-robot mode, no auth. To demonstrate fleet-tier
+    # auth (browser HTTP Basic + agent Bearer), uncomment the entire
+    # `environment:` block below.
+    #
+    # environment:
+    #   MD_MODE: fleet
+    #   MD_HUB_AUTH_PASSWORD: demo
     ports:
       - "${HOST_PORT:-8000}:8000"
     volumes:
