@@ -24,13 +24,25 @@ First run pulls a pre-built image from [GHCR](https://github.com/mukul-07/missio
 
 ## What you'll see
 
-The session list will already contain a `sample_drive` fixture — click it.
+The session list ships with **two** fixtures:
 
-- 30 seconds of synthetic robot drive data
-- A stall around `t=8s` (commanded velocity high, odometry near zero)
-- A 0.8m path deviation around `t=14s` (orange dot drifts off the green planned path)
+### `sample_drive` — the narrative
+30 seconds of synthetic robot drive data with two staged failures:
+- A **stall** around `t=8s` (commanded velocity high, odometry near zero).
+- A **0.8m path deviation** around `t=14s`. The front + rear camera tracks render a perspective warehouse aisle; the orange dot at the bottom of frame shifts laterally during the drift so the deviation is visible from the camera POV.
 
-Scrub the timeline. Hit space to play. Hit `←` / `→` for 100ms steps. Add an annotation at the playhead. Copy a deep-linked URL (`?t=14.2`) to share a specific frame with a teammate.
+### `warehouse_robot_30_topics` — the fleet-scale view
+30 synthetic topics in the shape of a real fleet robot — diagnostics, control feedback, state machines, multi-field hardware, two `cmd_vel`-shaped control topics. Demonstrates how the UI scales to a real 30-topic robot.
+
+### Things to try on either session
+
+- Scrub the timeline, hit **space** to play, `←` / `→` for 100ms steps, `Shift+←` / `Shift+→` for 1s.
+- **Add an annotation at the playhead** and **copy a deep-linked URL** (`?t=14.2`) to share an exact frame with a teammate.
+- Open the **command palette** (`⌘K` on Mac, `Ctrl+K` on Linux / Windows) to jump between sessions / robots / subsystems.
+- On the 30-topic session, the **scalar chart grid** auto-renders one chart per numeric topic. Use the **chip-based filter** above the grid (`?q=imu,motor` syntax — type a substring, press Enter, OR-matches multiple chips) to narrow to topics relevant to your investigation.
+- Below the charts, the **JSON inspector** lets you scrub the playhead and read the full decoded message tree for any topic — useful for state machines and custom messages.
+- **`Fleet`** in the top nav shows the agent-health view (online / stale / silent counts) — relevant when you wire up multiple agents to one hub.
+- **`Open in Foxglove`** hands the same MCAP off to Foxglove Studio for deep visualization (3D, panels, custom layouts).
 
 ## What this demo is, and isn't
 
