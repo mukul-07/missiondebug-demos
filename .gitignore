@@ -2,3 +2,7 @@ sessions/
 *.sqlite3
 *.sqlite3-journal
 .DS_Store
+
+# Python bytecode from the seed job
+__pycache__/
+*.pyc

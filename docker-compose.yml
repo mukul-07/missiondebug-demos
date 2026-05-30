@@ -41,3 +41,24 @@ services:
       - ./fixtures:/fixtures:ro
       - ./sessions:/sessions
     restart: unless-stopped
+
+  # One-shot job: populate the fleet incident dashboard so the demo shows
+  # the buyable surface (MTTR, recurrence, top patterns, "this happened
+  # before" with resolutions) — not just an empty day-one hub. Waits for
+  # the backend, POSTs a realistic incident corpus, then exits. Idempotent,
+  # so it's safe to re-run on every `docker compose up`. Tiny stdlib-only
+  # python script, no pip installs.
+  seed:
+    image: python:3.12-slim
+    container_name: missiondebug-demo-seed
+    depends_on:
+      - missiondebug
+    environment:
+      HUB: "http://missiondebug:8000"
+      # Mirror the hub's auth so seeding works in fleet mode too.
+      MD_HUB_AUTH_PASSWORD: "${MD_HUB_AUTH_PASSWORD:-}"
+      MD_HUB_AUTH_TOKEN: "${MD_HUB_AUTH_TOKEN:-}"
+    volumes:
+      - ./seed:/seed:ro
+    command: ["python", "/seed/seed_incidents.py"]
+    restart: "no"
