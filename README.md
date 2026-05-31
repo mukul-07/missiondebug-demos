@@ -6,6 +6,8 @@
 
 ![MissionDebug fleet incident dashboard — recurrence rate, MTTR, estimated re-investigation time avoided, top recurring patterns, captures per robot](docs/screenshot-incidents.png)
 
+> **Showing this to someone?** [`docs/DEMO-SCRIPT.md`](docs/DEMO-SCRIPT.md) is a repeatable 5-minute walkthrough — lead with the dashboard, make the ROI tile show their own number, then drill into one recurring incident.
+
 ## Run it
 
 You need [Docker](https://docs.docker.com/get-docker/) with Compose.
