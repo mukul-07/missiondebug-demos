@@ -57,6 +57,22 @@ def wait_for_hub(timeout=120):
 
 NOW = time.time()
 
+# Shared warehouse-AGV topic set every robot publishes (~28 topics), so each
+# session reads like a real 30-70-topic fleet robot rather than a 4-topic toy.
+# The incident-specific "lead" topics (passed per session) stay first in the
+# summary; these fill out the full topic list. TF-IDF down-weights ubiquitous
+# topics automatically, so the rule name + subsystem still drive similarity.
+BASE_TOPICS = [
+    "/tf", "/tf_static", "/joint_states", "/diagnostics_agg", "/imu/data",
+    "/imu/mag", "/camera/front/image_raw", "/camera/rear/image_raw",
+    "/camera/front/camera_info", "/localization/pose", "/map",
+    "/odom_filtered", "/wheel/odom", "/scan_filtered", "/motor/left/temp",
+    "/motor/right/temp", "/motor/left/current", "/motor/right/current",
+    "/estop_status", "/safety/bumper", "/safety/field_violation",
+    "/charge_status", "/mission/status", "/fleet/state", "/cmd_vel_nav",
+    "/battery/cell_voltages", "/global_plan", "/local_plan",
+]
+
 
 def ingest(sid, robot, subsystem, days_ago, rule, dur_s, size, topics_h):
     started_s = NOW - days_ago * 86400
@@ -65,13 +81,16 @@ def ingest(sid, robot, subsystem, days_ago, rule, dur_s, size, topics_h):
     started_str = datetime.fromtimestamp(started_s, tz=timezone.utc).strftime(
         "%Y-%m-%d %H:%M:%S UTC"
     )
-    topics = [t.split(" (")[0] for t in topics_h.split(", ")]
+    lead = [t.split(" (")[0] for t in topics_h.split(", ")]
+    topics = list(dict.fromkeys(lead + BASE_TOPICS))  # dedup, lead first
     n = len(topics)
+    extra = n - len(lead)
+    topic_part = topics_h + (f", +{extra} more" if extra > 0 else "")
     size_kb = f"{size / 1024:.1f} KB"
     summary = (
         f"Auto-triggered by rule '{rule}' at {started_str} on {robot} "
         f"(subsystem: {subsystem}). Captured {dur_s}.0s across {n} topics: "
-        f"{topics_h}. Total payload: {size_kb}."
+        f"{topic_part}. Total payload: {size_kb}."
     )
     body = {
         "session_id": sid,
