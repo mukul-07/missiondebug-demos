@@ -4,6 +4,8 @@
 
 **MissionDebug is the incident memory for your robot fleet.** It captures the 60 seconds around every failure, then makes that history *queryable* — so your team stops re-solving the same incident over and over. This repo runs a self-contained demo, pre-loaded with a realistic fleet incident history, so you can see the dashboard your ops team actually buys — and scrub a real capture in the browser.
 
+![MissionDebug fleet incident dashboard — recurrence rate, MTTR, estimated re-investigation time avoided, top recurring patterns, captures per robot](docs/screenshot-incidents.png)
+
 ## Run it
 
 You need [Docker](https://docs.docker.com/get-docker/) with Compose.
