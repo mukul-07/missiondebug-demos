@@ -1,0 +1,11 @@
+# Minimal Prometheus config for the demo. The OTLP receiver (enabled via
+# --web.enable-otlp-receiver in the compose command) accepts pushes from the
+# MissionDebug hub at /api/v1/otlp/v1/metrics. No scrape targets needed —
+# the hub pushes; Prometheus stores; Grafana reads.
+global:
+  scrape_interval: 5s
+
+# Allow slightly out-of-order samples — OTLP pushes can arrive a beat late.
+storage:
+  tsdb:
+    out_of_order_time_window: 30m

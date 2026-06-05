@@ -1,0 +1,44 @@
+# Optional observability overlay — see MissionDebug incidents flow into
+# Grafana via OpenTelemetry, exactly as they would in a customer's stack.
+#
+#   docker compose -f docker-compose.yml -f docker-compose.otel.yml up
+#
+# Then open Grafana at http://localhost:3000 (anonymous, no login) →
+# "MissionDebug — Fleet Incidents". Seed/capture incidents and watch the
+# panels populate. All on this compose network — no internet, hub-only.
+services:
+  missiondebug:
+    environment:
+      # The hub exports OTLP metrics + incident events to Prometheus's OTLP
+      # receiver (at /api/v1/otlp; the hub appends /v1/metrics). Setting this
+      # only here — in the overlay — means the base demo never tries to emit.
+      MD_OTEL_ENDPOINT: "http://prometheus:9090/api/v1/otlp"
+      MD_HUB_PUBLIC_URL: "http://localhost:${HOST_PORT:-8000}"
+      MD_OTEL_SERVICE_NAME: "missiondebug"
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: missiondebug-demo-prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --web.enable-otlp-receiver          # accept OTLP pushes from the hub
+    volumes:
+      - ./otel/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: missiondebug-demo-grafana
+    depends_on:
+      - prometheus
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: "Admin"
+      GF_AUTH_DISABLE_LOGIN_FORM: "true"
+      GF_USERS_DEFAULT_THEME: "dark"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./otel/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./otel/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    restart: unless-stopped

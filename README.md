@@ -101,6 +101,35 @@ export MD_HUB_AUTH_PASSWORD=demo
 docker compose up -d --force-recreate
 ```
 
+## Demonstrating OpenTelemetry → Grafana
+
+MissionDebug can export its incidents + KPIs to your existing observability
+stack over OpenTelemetry, so they show up where your team already looks —
+no separate tab. This overlay shows it live with a self-contained
+Prometheus + Grafana:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.otel.yml up
+```
+
+Then:
+1. Open the app, click **Incidents**, and seed/capture some incidents
+   (`./scripts/seed-incidents.sh`, or trigger a capture).
+2. Open **Grafana → http://localhost:3000** (anonymous, no login) and the
+   **"MissionDebug — Fleet Incidents"** dashboard. Within ~15s the panels
+   populate: captured/resolved counts, recurrence rate, MTTR, agents
+   reporting — the same KPIs as the in-app dashboard, now in *your* Grafana.
+
+The hub (not the robot) pushes OTLP to Prometheus on the compose network —
+nothing leaves the host, works air-gapped. In production you'd point
+`MD_OTEL_ENDPOINT` at your own collector and route the incident events to
+Slack / PagerDuty; see the main repo's `docs/INTEGRATIONS.md`.
+
+> If a Grafana panel shows "No data", Prometheus may translate the OTLP
+> metric names slightly differently across versions. Check the exact names
+> at <http://localhost:9090> (search `missiondebug`) and adjust the panel
+> queries — the metrics are flowing as soon as they appear there.
+
 ## Pinning to a specific version
 
 By default the demo tracks `:latest` (tip of `main`). To pin to a release tag or a specific commit, edit `docker-compose.yml`:
