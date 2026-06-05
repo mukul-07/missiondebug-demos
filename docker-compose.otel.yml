@@ -22,6 +22,8 @@ services:
     command:
       - --config.file=/etc/prometheus/prometheus.yml
       - --web.enable-otlp-receiver          # accept OTLP pushes from the hub
+    ports:
+      - "9090:9090"                         # so you can inspect metric names at localhost:9090
     volumes:
       - ./otel/prometheus.yml:/etc/prometheus/prometheus.yml:ro
     restart: unless-stopped
