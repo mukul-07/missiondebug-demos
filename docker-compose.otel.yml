@@ -7,6 +7,12 @@
 # "MissionDebug — Fleet Incidents". Seed/capture incidents and watch the
 # panels populate. All on this compose network — no internet, hub-only.
 services:
+  # Keep the seeded fleet "reporting" (heartbeat every 60s) so the
+  # agents-reporting metric stays healthy for the demo, like a live fleet.
+  seed:
+    environment:
+      SEED_KEEPALIVE: "1"
+
   missiondebug:
     environment:
       # The hub exports OTLP metrics + incident events to Prometheus's OTLP
