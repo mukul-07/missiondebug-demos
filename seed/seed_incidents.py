@@ -196,11 +196,33 @@ def main():
             "Known GPS multipath in aisle 7; operational workaround documented")
     # SES-240 intentionally left open.
 
-    for robot in ("warehouse-bot-01", "warehouse-bot-02", "warehouse-bot-03",
-                  "warehouse-bot-05", "warehouse-bot-07"):
+    robots = (
+        "warehouse-bot-01", "warehouse-bot-02", "warehouse-bot-03",
+        "warehouse-bot-05", "warehouse-bot-07",
+    )
+    for robot in robots:
         heartbeat(robot)
 
     print("[demo-seed] done. Open the Incidents dashboard.", flush=True)
+
+    # Optional keepalive: real agents heartbeat every ~60s, so the fleet reads
+    # as "reporting". The one-shot seed would otherwise let the robots go
+    # silent after the staleness window, decaying "agents reporting" to 0.
+    # Enabled via SEED_KEEPALIVE (set in the OTel overlay) so the base demo
+    # still exits cleanly.
+    if os.environ.get("SEED_KEEPALIVE", "").strip().lower() in ("1", "true", "yes"):
+        print("[demo-seed] keepalive on — heartbeating every 60s.", flush=True)
+        while True:
+            time.sleep(60)
+            for robot in robots:
+                try:
+                    _request(
+                        "/api/v1/agents/heartbeat",
+                        {"robot_id": robot, "agent_version": "2.0.0", "buffer_size": 600},
+                        method="POST",
+                    )
+                except Exception:
+                    pass
 
 
 if __name__ == "__main__":
