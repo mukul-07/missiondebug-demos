@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MissionDebug — How it works</title>
+<style>
+  :root{
+    --bg:#f5f6f8; --card:#ffffff; --ink:#1d2330; --muted:#6b7280;
+    --line:#e3e6eb; --robot:#3b82f6; --hub:#8b5cf6; --people:#10b981;
+    --accent:#f97316; --gold:#fbbf24; --soft:#eef2ff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:'Inter',-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.5;padding:28px 16px 60px}
+  .wrap{max-width:1080px;margin:0 auto}
+  h1{font-size:28px;margin:0 0 4px}
+  .tagline{color:var(--muted);font-size:16px;margin:0 0 26px;max-width:760px}
+  .tagline b{color:var(--ink)}
+  h2{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);
+    margin:34px 0 12px;font-weight:700}
+
+  /* 3-zone diagram */
+  .flow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;align-items:stretch}
+  .zone{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:14px 14px 16px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+  .zone .ztag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;
+    text-transform:uppercase;padding:3px 9px;border-radius:20px;color:#fff;margin-bottom:10px}
+  .zone.robot .ztag{background:var(--robot)} .zone.hub .ztag{background:var(--hub)}
+  .zone.people .ztag{background:var(--people)}
+  .zone h3{margin:0 0 10px;font-size:15px}
+  .box{background:#fafbfc;border:1px solid var(--line);border-radius:9px;padding:9px 11px;
+    margin-bottom:8px;font-size:13px}
+  .box .b-title{font-weight:600;display:block;margin-bottom:2px}
+  .box small{color:var(--muted);font-size:12px}
+  .star{background:linear-gradient(180deg,#fff8e6,#fff);border-color:var(--gold)}
+  .star .b-title::after{content:" ★";color:var(--accent)}
+
+  .arrows{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:6px}
+  .arrowcell{text-align:center;color:var(--muted);font-size:12px}
+  .arrowcell .a{font-size:18px;color:var(--hub);line-height:1}
+
+  /* layers */
+  .layers{display:grid;gap:8px}
+  .layer{display:grid;grid-template-columns:140px 1fr;gap:14px;align-items:center;
+    background:var(--card);border:1px solid var(--line);border-radius:11px;padding:12px 14px}
+  .layer .lname{font-weight:700;font-size:14px}
+  .layer .lname small{display:block;color:var(--muted);font-weight:500;font-size:11.5px}
+  .layer .ldesc{font-size:13px;color:#374151}
+  .layer.buy{background:linear-gradient(180deg,#fff8e6,#fff);border-color:var(--gold)}
+  .layer.buy .lname{color:#b45309}
+  .layer.plan{border-style:dashed;opacity:.92}
+  .pill{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:20px;margin-left:6px}
+  .pill.buy{background:var(--accent);color:#fff}
+  .pill.plan{background:#e5e7eb;color:#4b5563}
+  .pill.live{background:var(--people);color:#fff}
+
+  /* callouts */
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .call{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .call h4{margin:0 0 8px;font-size:14px}
+  .call ul{margin:0;padding-left:18px;font-size:13px;color:#374151}
+  .call li{margin:3px 0}
+  .data{background:var(--soft);border:1px solid #dfe3ff;border-radius:12px;padding:14px 16px;font-size:13.5px}
+  .data b{color:#3730a3}
+  .green{color:var(--people);font-weight:700}
+  .amber{color:var(--accent);font-weight:700}
+  .legend{font-size:12px;color:var(--muted);margin-top:8px}
+  @media(max-width:820px){.flow,.arrows,.cols{grid-template-columns:1fr}.layer{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>MissionDebug — how it works</h1>
+  <p class="tagline">
+    The <b>incident-memory layer</b> for a robot fleet. It captures the 60 seconds
+    around every failure, lets you replay it, and makes the fleet's entire
+    incident history <b>queryable</b> — so teams stop re-solving the same problem.
+  </p>
+
+  <!-- ===== 3-ZONE FLOW ===== -->
+  <h2>The three pieces</h2>
+  <div class="flow">
+    <div class="zone robot">
+      <span class="ztag">On each robot</span>
+      <h3>Agent</h3>
+      <div class="box"><span class="b-title">60-second rolling buffer</span>
+        <small>always holds the last 60s of the topics you care about</small></div>
+      <div class="box"><span class="b-title">Detectors fire</span>
+        <small>stall, path-deviation, low-battery, topic-dropout, or your own YAML rules</small></div>
+      <div class="box"><span class="b-title">Writes a recording + summary</span>
+        <small>a standard MCAP file + a plain-text summary, then reports it to the hub</small></div>
+    </div>
+
+    <div class="zone hub">
+      <span class="ztag">On a server (you host)</span>
+      <h3>Hub</h3>
+      <div class="box star"><span class="b-title">Incident memory</span>
+        <small>summaries, "has this happened before?", resolutions, MTTR &amp; recurrence</small></div>
+      <div class="box"><span class="b-title">Fleet rollup</span>
+        <small>dashboard KPIs across every robot; operational health</small></div>
+      <div class="box"><span class="b-title">Serves recordings on demand</span>
+        <small>streams the MCAP from the robot (or S3) only when someone scrubs it</small></div>
+    </div>
+
+    <div class="zone people">
+      <span class="ztag">What people &amp; tools see</span>
+      <h3>Web UI &amp; integrations</h3>
+      <div class="box star"><span class="b-title">Fleet incident dashboard</span>
+        <small>recurrence, MTTR, top patterns, "value avoided" — the buyable screen</small></div>
+      <div class="box"><span class="b-title">Replay in the browser</span>
+        <small>scrub the timeline, charts for 30–70 topics, annotate, share a link</small></div>
+      <div class="box"><span class="b-title">Flows into your stack</span>
+        <small>OpenTelemetry → your Grafana / Datadog / PagerDuty</small></div>
+    </div>
+  </div>
+
+  <div class="arrows">
+    <div class="arrowcell"><div class="a">▶</div>reports each incident<br>to the hub (your LAN)</div>
+    <div class="arrowcell"><div class="a">▶</div>serves the dashboard<br>&amp; replay to the browser</div>
+    <div class="arrowcell"><div class="a">▶</div>pushes incidents out<br>to tools you already use</div>
+  </div>
+  <p class="legend">★ = the surface customers actually buy (the incident-memory dashboard).</p>
+
+  <!-- ===== LAYERS ===== -->
+  <h2>The capability layers (bottom → top)</h2>
+  <div class="layers">
+    <div class="layer">
+      <div class="lname">1 · Capture <small>the primitive</small></div>
+      <div class="ldesc">Agent keeps a 60s buffer and snapshots an MCAP the moment a detector fires.</div>
+    </div>
+    <div class="layer">
+      <div class="lname">2 · Replay <small>how a capture works</small></div>
+      <div class="ldesc">Scrub the recording in the browser — timeline, per-topic charts, JSON inspector, annotations, shareable timestamp links.</div>
+    </div>
+    <div class="layer buy">
+      <div class="lname">3 · Incident memory <span class="pill buy">BUYABLE</span><small>what gets bought</small></div>
+      <div class="ldesc">Structured summaries, "has this happened before?" similarity, resolution tracking, and the fleet dashboard (MTTR, recurrence, top patterns, ROI).</div>
+    </div>
+    <div class="layer">
+      <div class="lname">4 · Integrations <span class="pill live">LIVE</span><small>removes adoption friction</small></div>
+      <div class="ldesc">Incidents flow <i>out</i> via OpenTelemetry into your Grafana / Datadog / on-call; external alerts can <i>trigger</i> captures (webhooks, medkit Triggers).</div>
+    </div>
+    <div class="layer plan">
+      <div class="lname">5 · AI agent <span class="pill plan">PLANNED</span><small>the differentiator</small></div>
+      <div class="ldesc">Ask the incident history in plain English — "why does bot-03 keep stalling, and what fixed it last time?" Turns a dashboard you read into an expert you ask.</div>
+    </div>
+  </div>
+
+  <!-- ===== DATA ===== -->
+  <h2>Where your data lives</h2>
+  <div class="data">
+    <b>Recordings (big):</b> stay on the robot by default, or your own opt-in S3 bucket — never auto-uploaded. Retention can tier or delete them over time.<br>
+    <b>Incident memory (small &amp; queryable):</b> lives in the hub's database and <b>survives after the recording is gone.</b> That separation <i>is</i> the product — the 60-second clip is disposable; the memory of the incident is forever.
+  </div>
+
+  <!-- ===== OFFLINE VS OUT ===== -->
+  <h2>Private by default</h2>
+  <div class="cols">
+    <div class="call">
+      <h4><span class="green">Works fully offline / air-gapped</span></h4>
+      <ul>
+        <li>Capture, replay, charts</li>
+        <li>Summaries &amp; "happened before?" search</li>
+        <li>Fleet dashboard, resolutions, MTTR</li>
+        <li>Self-hostable end to end — no mandatory cloud, no login</li>
+      </ul>
+    </div>
+    <div class="call">
+      <h4><span class="amber">Reaches out only if you opt in</span></h4>
+      <ul>
+        <li>OpenTelemetry → <i>your own</i> collector, on your network</li>
+        <li>AI agent → an LLM (cloud, or a local model for air-gap)</li>
+        <li>S3 upload of recordings (off by default)</li>
+        <li>Each is gated by config — nothing leaves unless you turn it on</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== SHAPES ===== -->
+  <h2>Two ways to run it (same software)</h2>
+  <div class="cols">
+    <div class="call">
+      <h4>Standalone — one robot</h4>
+      <div class="ldesc" style="font-size:13px;color:#374151">Agent + hub + UI on a single robot. Capture &amp; replay, no central server. The free wedge.</div>
+    </div>
+    <div class="call">
+      <h4>Fleet Edition — many robots</h4>
+      <div class="ldesc" style="font-size:13px;color:#374151">Every robot's agent reports to one central hub that aggregates incident memory across the whole fleet. Per-robot-per-month.</div>
+    </div>
+  </div>
+
+  <p class="legend" style="margin-top:26px">
+    Standards-native: MCAP + Foxglove. Complementary to live-ops tools (you debug the robot <i>after</i> the alert, not instead of operating it live).
+  </p>
+
+</div>
+</body>
+</html>
