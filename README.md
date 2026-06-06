@@ -130,6 +130,25 @@ Slack / PagerDuty; see the main repo's `docs/INTEGRATIONS.md`.
 > at <http://localhost:9090> (search `missiondebug`) and adjust the panel
 > queries — the metrics are flowing as soon as they appear there.
 
+## Demonstrating the incident agent (AI Q&A, opt-in)
+
+The Incidents dashboard has an **"Ask the incident history"** panel — type a
+question in plain English and get a grounded answer that cites the exact
+incidents it used. It's off by default (no data leaves the host). To enable
+it, give the hub your own LLM key:
+
+```bash
+cp .env.example .env          # then uncomment + set MD_LLM_API_KEY=sk-ant-...
+docker compose up -d --force-recreate
+```
+
+Open the **Incidents** tab and try: *"Has the battery_low issue happened
+before, and what fixed it?"* — it answers from the seeded corpus and links
+to the cited sessions. Without a key the panel shows a calm "disabled" note;
+everything else works offline. Air-gapped? Point `MD_LLM_BASE_URL` at a local
+model instead of the cloud. Only incident *metadata* is ever sent to the LLM
+— never recordings or PII.
+
 ## Pinning to a specific version
 
 By default the demo tracks `:latest` (tip of `main`). To pin to a release tag or a specific commit, edit `docker-compose.yml`:
