@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MissionDebug — Commercial Model</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#fff; --ink:#1b2330; --muted:#6b7280; --line:#e4e7ec;
+    --accent:#f97316; --green:#10b981; --blue:#3b82f6; --purple:#8b5cf6;
+    --gold:#f59e0b; --soft:#fff7ed;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:'Inter',-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.55;padding:30px 16px 70px}
+  .wrap{max-width:1040px;margin:0 auto}
+  h1{font-size:30px;margin:0 0 6px}
+  .sub{color:var(--muted);font-size:16px;margin:0 0 8px;max-width:720px}
+  .model{display:inline-block;background:var(--soft);border:1px solid #fed7aa;color:#9a3412;
+    font-size:13px;font-weight:600;padding:5px 12px;border-radius:20px;margin:10px 0 4px}
+  h2{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);
+    margin:38px 0 14px;font-weight:700}
+
+  /* tier cards */
+  .tiers{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;align-items:stretch}
+  .tier{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 18px;
+    display:flex;flex-direction:column;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  .tier.featured{border:2px solid var(--accent);box-shadow:0 6px 22px rgba(249,115,22,.14);position:relative}
+  .tier .badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);
+    background:var(--accent);color:#fff;font-size:11px;font-weight:700;padding:3px 12px;border-radius:20px}
+  .tier .name{font-size:18px;font-weight:700}
+  .tier .for{color:var(--muted);font-size:12.5px;margin-top:2px;min-height:34px}
+  .price{margin:14px 0 4px;font-size:30px;font-weight:800}
+  .price small{font-size:14px;color:var(--muted);font-weight:500}
+  .price .free{color:var(--green)}
+  .price .amt{color:var(--ink)}
+  .note{font-size:12px;color:var(--muted);min-height:18px}
+  .feat{list-style:none;padding:0;margin:14px 0 0;font-size:13.5px;display:grid;gap:7px}
+  .feat li{display:flex;gap:8px;align-items:flex-start}
+  .feat li::before{content:"✓";color:var(--green);font-weight:800;flex:none}
+  .feat li.no{color:#9ca3af}
+  .feat li.no::before{content:"–";color:#cbd5e1}
+  .cta{margin-top:auto;padding-top:16px}
+  .cta a,.cta span{display:block;text-align:center;border-radius:9px;padding:9px;font-weight:600;
+    font-size:14px;text-decoration:none;border:1px solid var(--line);color:var(--ink)}
+  .cta .primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+  /* boundary table */
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);
+    border-radius:12px;overflow:hidden;font-size:13.5px}
+  th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line)}
+  th{background:#fafbfc;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+  td.c{text-align:center}
+  .yes{color:var(--green);font-weight:700}.dash{color:#cbd5e1}
+  tr:last-child td{border-bottom:none}
+
+  .why{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .box h3{margin:0 0 8px;font-size:15px}
+  .box p{margin:0;font-size:13.5px;color:#374151}
+  .moat{background:linear-gradient(180deg,#faf5ff,#fff);border:1px solid #e9d5ff;border-radius:12px;
+    padding:16px 18px;font-size:13.5px}
+  .moat b{color:#6b21a8}
+  .legend{font-size:12px;color:var(--muted);margin-top:10px}
+  @media(max-width:840px){.tiers,.why{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="model">Open-core · self-host free, pay for scale</div>
+  <h1>MissionDebug — commercial model</h1>
+  <p class="sub">
+    The full product is open source (MIT) and free to run yourself. You pay
+    when you're operating a <b>fleet</b> and need scale, compliance, support,
+    and the cross-fleet incident network — not for the bits.
+  </p>
+
+  <!-- ===== TIERS ===== -->
+  <h2>Plans</h2>
+  <div class="tiers">
+
+    <div class="tier">
+      <div class="name">Community</div>
+      <div class="for">Engineers, small teams, evaluators. Single robot → small fleet.</div>
+      <div class="price"><span class="free">Free</span></div>
+      <div class="note">MIT, self-hosted. Forever.</div>
+      <ul class="feat">
+        <li>60s capture + Foxglove replay</li>
+        <li>Incident dashboard, similarity, resolutions</li>
+        <li>YAML detectors + per-topic buffers</li>
+        <li>OpenTelemetry export</li>
+        <li>AI agent (bring your own LLM key)</li>
+        <li>Community support (GitHub)</li>
+      </ul>
+      <div class="cta"><a href="https://github.com/mukul-07/missiondebug">Self-host it →</a></div>
+    </div>
+
+    <div class="tier featured">
+      <div class="badge">MOST TEAMS START HERE</div>
+      <div class="name">Fleet</div>
+      <div class="for">Companies running real fleets that need scale + support.</div>
+      <div class="price"><span class="amt">$20</span><small> / robot / month</small></div>
+      <div class="note">annual billing; volume discounts at 100+ robots</div>
+      <ul class="feat">
+        <li><b>Everything in Community, plus:</b></li>
+        <li>Central hub tuned for 100+ robots</li>
+        <li>Alerting → PagerDuty / Slack / webhook</li>
+        <li>Retention &amp; cold-tier lifecycle policies</li>
+        <li>Priority support + onboarding</li>
+        <li>Commercial-use license</li>
+      </ul>
+      <div class="cta"><span class="primary">Talk to us</span></div>
+    </div>
+
+    <div class="tier">
+      <div class="name">Enterprise</div>
+      <div class="for">Larger / regulated fleets — defense, surgical, secure facilities.</div>
+      <div class="price"><span class="amt">Custom</span></div>
+      <div class="note">annual contract</div>
+      <ul class="feat">
+        <li><b>Everything in Fleet, plus:</b></li>
+        <li>SSO / RBAC / audit logs</li>
+        <li>Air-gapped deployment support</li>
+        <li>SLA + dedicated support</li>
+        <li>Cross-fleet incident network (opt-in)</li>
+        <li>Custom integrations</li>
+      </ul>
+      <div class="cta"><span>Contact sales</span></div>
+    </div>
+  </div>
+
+  <p class="legend">Pricing anchored to the per-robot-per-month norm for ROS fleet capabilities ($5–$20/robot/mo). MissionDebug records <i>all</i> topics + adds the incident-memory layer, so it sits at the top of that band.</p>
+
+  <!-- ===== BOUNDARY ===== -->
+  <h2>What's free vs paid (the open-core line)</h2>
+  <table>
+    <tr><th>Capability</th><th class="c">Community</th><th class="c">Fleet</th><th class="c">Enterprise</th></tr>
+    <tr><td>Capture + replay (MCAP / Foxglove)</td><td class="c yes">✓</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
+    <tr><td>Incident-memory dashboard + AI agent</td><td class="c yes">✓</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
+    <tr><td>OpenTelemetry export</td><td class="c yes">✓</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
+    <tr><td>Fleet hub at scale (100+ robots)</td><td class="c dash">–</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
+    <tr><td>Alerting (PagerDuty / Slack)</td><td class="c dash">–</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
+    <tr><td>Retention / cold-tier lifecycle</td><td class="c dash">–</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
+    <tr><td>Priority support + SLA</td><td class="c dash">–</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
+    <tr><td>SSO / RBAC / audit</td><td class="c dash">–</td><td class="c dash">–</td><td class="c yes">✓</td></tr>
+    <tr><td>Cross-fleet incident network</td><td class="c dash">–</td><td class="c dash">–</td><td class="c yes">✓</td></tr>
+  </table>
+
+  <!-- ===== WHY ===== -->
+  <h2>Why this model</h2>
+  <div class="why">
+    <div class="box">
+      <h3>Open source is the funnel, not the product</h3>
+      <p>The free MIT version drives adoption — engineers try it, run it on a robot, love it. You monetize the moment that becomes a <i>fleet</i>: scale, compliance, support, and the network. You're selling operational value, not gating the bits.</p>
+    </div>
+    <div class="box">
+      <h3>Sell what self-hosting can't give for free</h3>
+      <p>A 100-robot company won't re-build SSO, alerting, lifecycle, and an SLA — and won't want to operate it alone. That's the Fleet/Enterprise value. (Hosting isn't the lever here: your air-gap customers self-host by design.)</p>
+    </div>
+  </div>
+
+  <h2>The long-term moat</h2>
+  <div class="moat">
+    <b>The cross-fleet incident network.</b> Once several fleets opt in, MissionDebug can answer <i>"this failure mode is known across the industry — here's how others fixed it."</i> No single company can rebuild that; it compounds with every fleet. It's the Enterprise add-on that turns a replicable tool into a defensible network — and the reason open-core (not support-only) is the right anchor: it's the path that leads here.
+  </div>
+
+  <!-- ===== DISTRIBUTION ===== -->
+  <h2>How it reaches customers</h2>
+  <div class="why">
+    <div class="box">
+      <h3>Direct</h3>
+      <p>Open-source + zero-install demo as top-of-funnel → convert at the "you crossed N robots / you need SSO / you need an SLA" trigger. Warm intros (Transitive's Christian Fritz + 5 warm leads).</p>
+    </div>
+    <div class="box">
+      <h3>Transitive capability</h3>
+      <p>List MissionDebug as a capability on Transitive's platform → distribution into pre-qualified ROS fleets, per-robot billing through their portal. Additive to the <code>.deb</code> / self-host path, never a replacement.</p>
+    </div>
+  </div>
+
+  <p class="legend" style="margin-top:24px">
+    Draft for discussion — numbers are starting points anchored to public comps, to be refined with the first pilot. The Community tier stays MIT and free forever; the wedge is that single-robot use is never gated.
+  </p>
+
+</div>
+</body>
+</html>
