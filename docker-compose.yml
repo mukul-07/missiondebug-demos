@@ -35,6 +35,12 @@ services:
       MD_MODE: "${MD_MODE:-single}"
       MD_HUB_AUTH_PASSWORD: "${MD_HUB_AUTH_PASSWORD:-}"
       MD_HUB_AUTH_TOKEN: "${MD_HUB_AUTH_TOKEN:-}"
+      # Paid-tier license (ee/ features: alerting + lifecycle). The demo ships a
+      # built-in DEMO license + its public key so those features work out of the
+      # box. A real customer overrides MD_LICENSE_KEY with the key issued to
+      # them, and MD_LICENSE_PUBKEY with their own signing public key.
+      MD_LICENSE_PUBKEY: "${MD_LICENSE_PUBKEY:-qPDYqAv4RoiOg5md5WMVhbIsTobyE7myY61rUR_U9wA}"
+      MD_LICENSE_KEY: "${MD_LICENSE_KEY:-eyJjdXN0b21lciI6Ik1pc3Npb25EZWJ1ZyBEZW1vIiwiZXhwaXJlc19hdCI6bnVsbCwiZmVhdHVyZXMiOlsiYWxlcnRpbmciLCJsaWZlY3ljbGUiXSwiaWQiOiJNRC1ERU1PIiwicm9ib3RzIjoxMDB9.m2vmwHy83vkSEXf0lOX_iYSyMfQdROxKBnWLJ1-H0DoPd4Xm8Z8ygdtqEeVEBAjEedlJOawvLlQf2coj-ml_Ag}"
       # Natural-language incident agent (opt-in). Set MD_LLM_API_KEY in
       # .env to enable the "Ask the incident history" panel. Empty = off.
       MD_LLM_API_KEY: "${MD_LLM_API_KEY:-}"
