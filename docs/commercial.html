@@ -41,6 +41,8 @@
   .feat li::before{content:"✓";color:var(--green);font-weight:800;flex:none}
   .feat li.no{color:#9ca3af}
   .feat li.no::before{content:"–";color:#cbd5e1}
+  .soon{font-size:10px;font-weight:700;color:#9a3412;background:#ffedd5;border:1px solid #fed7aa;
+    border-radius:10px;padding:0 6px;margin-left:4px;vertical-align:middle;white-space:nowrap}
   .cta{margin-top:auto;padding-top:16px}
   .cta a,.cta span{display:block;text-align:center;border-radius:9px;padding:9px;font-weight:600;
     font-size:14px;text-decoration:none;border:1px solid var(--line);color:var(--ink)}
@@ -91,7 +93,7 @@
         <li>Incident dashboard, similarity, resolutions</li>
         <li>YAML detectors + per-topic buffers</li>
         <li>OpenTelemetry export</li>
-        <li>AI agent (bring your own LLM key)</li>
+        <li>AI agent — ask in plain English (bring your own LLM key)</li>
         <li>Community support (GitHub)</li>
       </ul>
       <div class="cta"><a href="https://github.com/mukul-07/missiondebug">Self-host it →</a></div>
@@ -105,9 +107,10 @@
       <div class="note">annual billing; volume discounts at 100+ robots</div>
       <ul class="feat">
         <li><b>Everything in Community, plus:</b></li>
-        <li>Central hub tuned for 100+ robots</li>
-        <li>Alerting → PagerDuty / Slack / webhook</li>
-        <li>Retention &amp; cold-tier lifecycle policies</li>
+        <li>Central hub for 100+ robots</li>
+        <li>Managed AI agent — no LLM key needed <span class="soon">soon</span></li>
+        <li>Alerting → PagerDuty / Slack / webhook <span class="soon">soon</span></li>
+        <li>Retention &amp; cold-tier lifecycle <span class="soon">soon</span></li>
         <li>Priority support + onboarding</li>
         <li>Commercial-use license</li>
       </ul>
@@ -121,10 +124,11 @@
       <div class="note">annual contract</div>
       <ul class="feat">
         <li><b>Everything in Fleet, plus:</b></li>
-        <li>SSO / RBAC / audit logs</li>
+        <li>SSO / RBAC / audit logs <span class="soon">soon</span></li>
+        <li>Cross-fleet AI queries + ask-audit <span class="soon">soon</span></li>
         <li>Air-gapped deployment support</li>
         <li>SLA + dedicated support</li>
-        <li>Cross-fleet incident network (opt-in)</li>
+        <li>Cross-fleet incident network <span class="soon">soon</span></li>
         <li>Custom integrations</li>
       </ul>
       <div class="cta"><span>Contact sales</span></div>
@@ -138,15 +142,20 @@
   <table>
     <tr><th>Capability</th><th class="c">Community</th><th class="c">Fleet</th><th class="c">Enterprise</th></tr>
     <tr><td>Capture + replay (MCAP / Foxglove)</td><td class="c yes">✓</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
-    <tr><td>Incident-memory dashboard + AI agent</td><td class="c yes">✓</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
+    <tr><td>Incident-memory dashboard + similarity</td><td class="c yes">✓</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
+    <tr><td>AI agent — ask (bring your own LLM)</td><td class="c yes">✓</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
     <tr><td>OpenTelemetry export</td><td class="c yes">✓</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
-    <tr><td>Fleet hub at scale (100+ robots)</td><td class="c dash">–</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
-    <tr><td>Alerting (PagerDuty / Slack)</td><td class="c dash">–</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
-    <tr><td>Retention / cold-tier lifecycle</td><td class="c dash">–</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
-    <tr><td>Priority support + SLA</td><td class="c dash">–</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
-    <tr><td>SSO / RBAC / audit</td><td class="c dash">–</td><td class="c dash">–</td><td class="c yes">✓</td></tr>
-    <tr><td>Cross-fleet incident network</td><td class="c dash">–</td><td class="c dash">–</td><td class="c yes">✓</td></tr>
+    <tr><td>Fleet hub for 100+ robots</td><td class="c dash">–</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
+    <tr><td>Priority support + onboarding</td><td class="c dash">–</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
+    <tr><td>Managed AI agent (no LLM key) <span class="soon">soon</span></td><td class="c dash">–</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
+    <tr><td>Alerting (PagerDuty / Slack) <span class="soon">soon</span></td><td class="c dash">–</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
+    <tr><td>Retention / cold-tier lifecycle <span class="soon">soon</span></td><td class="c dash">–</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
+    <tr><td>SSO / RBAC / audit <span class="soon">soon</span></td><td class="c dash">–</td><td class="c dash">–</td><td class="c yes">✓</td></tr>
+    <tr><td>SLA + dedicated support</td><td class="c dash">–</td><td class="c dash">–</td><td class="c yes">✓</td></tr>
+    <tr><td>Cross-fleet AI + ask-audit <span class="soon">soon</span></td><td class="c dash">–</td><td class="c dash">–</td><td class="c yes">✓</td></tr>
+    <tr><td>Cross-fleet incident network <span class="soon">soon</span></td><td class="c dash">–</td><td class="c dash">–</td><td class="c yes">✓</td></tr>
   </table>
+  <p class="legend"><b>✓ = available today.</b> <span class="soon">soon</span> = on the roadmap — built as pilots pull it, and sold honestly as such (never implied as shipping). Everything in <b>Community is live now</b>.</p>
 
   <!-- ===== WHY ===== -->
   <h2>Why this model</h2>
