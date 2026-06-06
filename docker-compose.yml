@@ -39,6 +39,7 @@ services:
       # .env to enable the "Ask the incident history" panel. Empty = off.
       MD_LLM_API_KEY: "${MD_LLM_API_KEY:-}"
       MD_LLM_MODEL: "${MD_LLM_MODEL:-}"
+      MD_LLM_PROVIDER: "${MD_LLM_PROVIDER:-}"
       MD_LLM_BASE_URL: "${MD_LLM_BASE_URL:-}"
     ports:
       - "${HOST_PORT:-8000}:8000"
