@@ -8,6 +8,8 @@
 
 > **Showing this to someone?** [`docs/DEMO-SCRIPT.md`](docs/DEMO-SCRIPT.md) is a repeatable 5-minute walkthrough — lead with the dashboard, make the ROI tile show their own number, then drill into one recurring incident.
 
+> **💳 Pricing & plans:** the single-robot capture + replay + incident dashboard is **free (MIT)** — run it forever. **[Fleet & Enterprise plans →](https://mukul-07.github.io/missiondebug-demos/commercial.html)** add the central hub at scale, alerting (Slack/PagerDuty), retention/lifecycle, and the managed AI agent.
+
 ## Run it
 
 You need [Docker](https://docs.docker.com/get-docker/) with Compose.
@@ -229,6 +231,6 @@ docker compose up -d             # -d = detached
 docker compose logs -f           # tail logs in another terminal
 ```
 
-## License
+## License & pricing
 
-MIT — same as the [main repo](https://github.com/mukul-07/missiondebug).
+This demo repo is MIT. The MissionDebug **product** is **open-core** — the free Community tier is MIT (run it forever, commercially included); the paid **Fleet / Enterprise** features are proprietary. See **[plans & pricing →](https://mukul-07.github.io/missiondebug-demos/commercial.html)** and the main repo's [LICENSING.md](https://github.com/mukul-07/missiondebug/blob/main/LICENSING.md).
