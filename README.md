@@ -132,24 +132,33 @@ Slack / PagerDuty; see the main repo's `docs/INTEGRATIONS.md`.
 > at <http://localhost:9090> (search `missiondebug`) and adjust the panel
 > queries — the metrics are flowing as soon as they appear there.
 
-## Demonstrating the incident agent (AI Q&A, opt-in)
+## Ask AI — plain-English Q&A (bring your own key)
 
-The Incidents dashboard has an **"Ask the incident history"** panel — type a
-question in plain English and get a grounded answer that cites the exact
-incidents it used. It's off by default (no data leaves the host). To enable
-it, give the hub your own LLM key:
+The Incidents dashboard has an **"Ask AI"** panel: ask your incident history
+in plain English and get a grounded answer that cites the exact incidents it
+used.
+
+**This is the only feature that needs an LLM key — everything else in this
+demo (the dashboard, similarity, replay, resolutions) works with zero setup.**
+It's opt-in and **bring-your-own**: your key and your data stay on your host —
+nothing goes to a MissionDebug cloud (air-gap-friendly). Add your own
+**OpenAI or Anthropic** key to turn it on:
 
 ```bash
-cp .env.example .env          # then uncomment + set MD_LLM_API_KEY=sk-ant-...
+cp .env.example .env          # then set MD_LLM_API_KEY=...
+#   OpenAI:    MD_LLM_API_KEY=sk-proj-...   (or sk-...)
+#   Anthropic: MD_LLM_API_KEY=sk-ant-...
+# The provider is auto-detected from the key prefix; default model is cheap
+# (gpt-4o-mini / claude). A few demo questions cost cents.
 docker compose up -d --force-recreate
 ```
 
 Open the **Incidents** tab and try: *"Has the battery_low issue happened
-before, and what fixed it?"* — it answers from the seeded corpus and links
-to the cited sessions. Without a key the panel shows a calm "disabled" note;
-everything else works offline. Air-gapped? Point `MD_LLM_BASE_URL` at a local
-model instead of the cloud. Only incident *metadata* is ever sent to the LLM
-— never recordings or PII.
+before, and what fixed it?"* — it answers from the seeded corpus and links to
+the cited sessions. Without a key, the panel shows a calm "add your key" note
+(nothing breaks). Air-gapped? Point `MD_LLM_BASE_URL` at a local /
+OpenAI-compatible model (Ollama, vLLM, …) instead of the cloud. Only incident
+*metadata* is ever sent to the LLM — never recordings or PII.
 
 ## Pinning to a specific version
 
