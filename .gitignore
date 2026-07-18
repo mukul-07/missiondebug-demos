@@ -6,3 +6,7 @@ sessions/
 # Python bytecode from the seed job
 __pycache__/
 *.pyc
+
+# Local secrets / runtime env (never commit — contains LLM keys)
+.env
+.env.local
