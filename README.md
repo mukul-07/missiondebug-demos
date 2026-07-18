@@ -6,6 +6,8 @@
 
 ![MissionDebug fleet incident dashboard — recurrence rate, MTTR, estimated re-investigation time avoided, top recurring patterns, captures per robot](docs/screenshot-incidents.png)
 
+> **🎬 60-second tour:** [docs/demo.mp4](docs/demo.mp4) — the dashboard, a real construction-robot capture replayed with camera + depth, and "has this happened before?" answered with past root causes.
+
 > **Showing this to someone?** [`docs/DEMO-SCRIPT.md`](docs/DEMO-SCRIPT.md) is a repeatable 5-minute walkthrough — lead with the dashboard, make the ROI tile show their own number, then drill into one recurring incident.
 
 > **💳 Pricing & plans:** the single-robot capture + replay + incident dashboard is **free (MIT)** — run it forever. **[Fleet & Enterprise plans →](https://mukul-07.github.io/missiondebug-demos/commercial.html)** add the central hub at scale, alerting (Slack/PagerDuty), retention/lifecycle, and the managed AI agent.
