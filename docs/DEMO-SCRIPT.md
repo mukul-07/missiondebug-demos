@@ -66,8 +66,11 @@ detail page, point at **"Has this happened before?"**:
 
 ## Supporting evidence (if they want to see the capture itself)
 
-- Open the **`sample_drive`** fixture (Sessions list) → scrub the timeline,
-  hit space to play. Show the camera track and the path-deviation at ~14s.
+- Open the **`construction_indoor_60s`** fixture (Sessions list) → hit space
+  to play. This is a **real construction robot on a real site**: camera and
+  colorized depth side by side, odometry charts tracking a ~50 m drive.
+  (If asked about the soft patch mid-clip: distant workers are blurred for
+  privacy — the telemetry underneath is untouched.)
 - Open **`warehouse_robot_30_topics`** → the scalar-chart grid auto-renders a
   chart per numeric topic; filter with the chip box (`imu`, `motor`). This is
   the "it scales to a real 30-70-topic robot" point.

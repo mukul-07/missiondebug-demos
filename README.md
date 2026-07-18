@@ -50,13 +50,11 @@ Open **`SES-203`** (a `battery_low` capture on `warehouse-bot-03`). At the top o
 
 > Seeded incidents carry their *metadata* but not the raw recording, so their detail page shows a clean **"recording unavailable"** state — that's intentional: at fleet scale the incident memory outlives the raw clip (retention tiers it to cold storage). To see full replay, open a fixture below.
 
-### 📼 Scrub a real capture — the `sample_drive` and `warehouse_robot_30_topics` fixtures
+### 📼 Scrub a capture — real construction-robot footage + a 30-topic fleet robot
 
-The demo also ships two real MCAP captures so you can see the replay layer:
+The demo ships two MCAP fixtures so you can see the replay layer:
 
-**`sample_drive` — the narrative.** 30 seconds of synthetic robot drive data with two staged failures:
-- A **stall** around `t=8s` (commanded velocity high, odometry near zero).
-- A **0.8m path deviation** around `t=14s`. The camera tracks render a perspective warehouse aisle; the orange dot at the bottom of frame shifts laterally during the drift so the deviation is visible from the camera POV.
+**`construction_indoor_60s` — real robot, real site.** A 60-second cut from a real construction robot driving an indoor site: front camera and a colorized depth camera side by side at 10 Hz, two odometry sources, and two IMUs at native rates (100/200 Hz). The robot covers ~50 m during the clip — concrete pillars, stacked panels, a power trowel in frame. (Distant workers visible through the open building edge are blurred for privacy, and GPS topics are stripped from the cut.)
 
 **`warehouse_robot_30_topics` — the fleet-scale view.** 30 synthetic topics in the shape of a real fleet robot — diagnostics, control feedback, state machines, multi-field hardware, two `cmd_vel`-shaped control topics. Demonstrates how the UI scales to a real 30-topic robot.
 
@@ -72,7 +70,7 @@ The **`Fleet`** view (top nav) shows agent health — online / stale / silent �
 
 ## What this demo is, and isn't
 
-**It is** the hub: the fleet incident dashboard, per-incident similarity + resolution, and the replay UI — backend + web, pre-seeded with a sample incident history and two real MCAP captures.
+**It is** the hub: the fleet incident dashboard, per-incident similarity + resolution, and the replay UI — backend + web, pre-seeded with a sample incident history, a real construction-robot capture, and a synthetic 30-topic fixture.
 
 **It isn't** the capture layer. The agent that subscribes to ROS topics and writes a new session when a detector fires only runs on a real ROS 2 system. For that, install the `.deb`s on your robot — see [the main repo](https://github.com/mukul-07/missiondebug#install-on-a-real-robot). Once an agent reports to this hub, *its* captures populate the same dashboard.
 
