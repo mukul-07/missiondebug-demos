@@ -4,8 +4,6 @@
 
 **MissionDebug is the incident memory for your robot fleet.** It captures the 60 seconds around every failure, then makes that history *queryable* — so your team stops re-solving the same incident over and over. This repo runs a self-contained demo, pre-loaded with a realistic fleet incident history, so you can see the dashboard your ops team actually buys — and scrub a real capture in the browser.
 
-![MissionDebug fleet incident dashboard — recurrence rate, MTTR, estimated re-investigation time avoided, top recurring patterns, captures per robot](docs/screenshot-incidents.png)
-
 [![MissionDebug in motion — the fleet dashboard, a real construction-robot capture replayed with camera + depth, and "has this happened before?" answered with past root causes. Click for the full tour.](docs/demo-preview.gif)](docs/demo.mp4)
 
 > **🎬 Click the preview** (or open [docs/demo.mp4](docs/demo.mp4)) for the full 60-second tour.
@@ -34,7 +32,9 @@ First run pulls a pre-built image from [GHCR](https://github.com/mukul-07/missio
 
 ### 🟢 The fleet incident dashboard — `Incidents` in the top nav
 
-This is the surface a fleet-ops lead buys. The demo seeds 9 incidents across 5 robots so the dashboard renders for real:
+This is the surface a fleet-ops lead buys. The demo seeds 13 incidents across 5 robots so the dashboard renders for real:
+
+![MissionDebug fleet incident dashboard — recurrence rate, MTTR, estimated re-investigation time avoided, top recurring patterns, captures per robot](docs/screenshot-incidents.png)
 
 - **MTTR** (mean time to resolution) and **resolution rate** across the fleet.
 - **Recurrence rate** — how many captures are duplicates of incidents you've already seen. The hook: *"this exact failure already happened twice, and here's the fix."*
@@ -70,7 +70,7 @@ On either fixture you can:
 - Use the **JSON inspector** to scrub the decoded message tree for any topic.
 - **`Open in Foxglove`** hands the same MCAP to Foxglove Studio for 3D / custom layouts.
 
-The **`Fleet`** view (top nav) shows agent health — online / stale / silent — across the seeded robots.
+The **Agents** view (top nav) shows agent health — online / stale / silent — across the seeded robots.
 
 ## What this demo is, and isn't
 
@@ -95,7 +95,7 @@ cp /path/to/your.mcap fixtures/
 docker compose restart
 ```
 
-## Demonstrating fleet auth (v2 P4)
+## Demonstrating fleet auth
 
 By default the demo runs in `single` mode (open routes). To show the fleet-tier auth gate, set a password before starting — the seed job uses the same secret as its Bearer token automatically:
 
@@ -118,7 +118,7 @@ docker compose -f docker-compose.yml -f docker-compose.otel.yml up
 
 Then:
 1. Open the app, click **Incidents**, and seed/capture some incidents
-   (`./scripts/seed-incidents.sh`, or trigger a capture).
+   (re-run the seed job with `docker compose up seed`, or trigger a capture).
 2. Open **Grafana → http://localhost:3000** (anonymous, no login) and the
    **"MissionDebug — Fleet Incidents"** dashboard. Within ~15s the panels
    populate: captured/resolved counts, recurrence rate, MTTR, agents
@@ -136,7 +136,7 @@ Slack / PagerDuty; see the main repo's `docs/INTEGRATIONS.md`.
 
 ## Ask AI — plain-English Q&A (bring your own key)
 
-The Incidents dashboard has an **"Ask AI"** panel: ask your incident history
+The **✨ Ask AI** tab in the top nav lets you ask your incident history
 in plain English and get a grounded answer that cites the exact incidents it
 used.
 
@@ -155,7 +155,7 @@ cp .env.example .env          # then set MD_LLM_API_KEY=...
 docker compose up -d --force-recreate
 ```
 
-Open the **Incidents** tab and try: *"Has the battery_low issue happened
+Open the **✨ Ask AI** tab and try: *"Has the battery_low issue happened
 before, and what fixed it?"* — it answers from the seeded corpus and links to
 the cited sessions. Without a key, the panel shows a calm "add your key" note
 (nothing breaks). Air-gapped? Point `MD_LLM_BASE_URL` at a local /
@@ -169,7 +169,7 @@ By default the demo tracks `:latest` (tip of `main`). To pin to a release tag or
 ```yaml
 services:
   missiondebug:
-    image: ghcr.io/mukul-07/missiondebug:1.5.0   # release tag
+    image: ghcr.io/mukul-07/missiondebug:0.8.2   # release tag
     # or:
     # image: ghcr.io/mukul-07/missiondebug:sha-abc1234   # immutable commit ref
 ```
