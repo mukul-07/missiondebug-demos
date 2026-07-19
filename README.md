@@ -6,7 +6,9 @@
 
 ![MissionDebug fleet incident dashboard — recurrence rate, MTTR, estimated re-investigation time avoided, top recurring patterns, captures per robot](docs/screenshot-incidents.png)
 
-> **🎬 60-second tour:** [docs/demo.mp4](docs/demo.mp4) — the dashboard, a real construction-robot capture replayed with camera + depth, and "has this happened before?" answered with past root causes.
+[![MissionDebug in motion — the fleet dashboard, a real construction-robot capture replayed with camera + depth, and "has this happened before?" answered with past root causes. Click for the full tour.](docs/demo-preview.gif)](docs/demo.mp4)
+
+> **🎬 Click the preview** (or open [docs/demo.mp4](docs/demo.mp4)) for the full 60-second tour.
 
 > **Showing this to someone?** [`docs/DEMO-SCRIPT.md`](docs/DEMO-SCRIPT.md) is a repeatable 5-minute walkthrough — lead with the dashboard, make the ROI tile show their own number, then drill into one recurring incident.
 
